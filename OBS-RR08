@@ -1,0 +1,107 @@
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$jDLc$gHutLE8C1nzxR9DdqqPLC/
+!
+interface Loopback0
+ ip address 19.15.10.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+!
+interface Ethernet2/0
+ description OBS-PCore013
+ ip address 172.168.49.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/1
+ description OBS-PCore04
+ ip address 10.100.10.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+router ospfv3 20
+ router-id 40.40.40.8
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospfv3 1
+ !
+ address-family ipv4 unicast
+ exit-address-family
+!
+router ospf 200
+ router-id 40.40.40.80
+ network 10.100.10.0 0.0.0.3 area 0
+ network 172.168.49.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+!
+router bgp 5200
+ bgp log-neighbor-changes
+ neighbor 11.11.11.1 remote-as 5200
+ neighbor 11.11.11.1 update-source Loopback0
+ neighbor 18.17.12.1 remote-as 5200
+ neighbor 18.17.12.1 update-source Loopback0
+ neighbor 18.17.12.1 route-reflector-client
+ neighbor 100.120.10.10 remote-as 5200
+ neighbor 100.120.10.10 update-source Loopback0
+ neighbor 100.120.10.10 route-reflector-client
+!
+!
+ address-family vpnv4
+  neighbor 11.11.11.1 activate
+  neighbor 11.11.11.1 send-community both
+  neighbor 18.17.12.1 activate
+  neighbor 18.17.12.1 send-community both
+  neighbor 100.120.10.10 activate
+  neighbor 100.120.10.10 send-community both
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!         
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end

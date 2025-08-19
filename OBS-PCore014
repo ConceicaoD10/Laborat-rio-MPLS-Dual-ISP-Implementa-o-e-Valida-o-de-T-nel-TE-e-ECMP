@@ -1,0 +1,107 @@
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$iKdz$obaRyTREpeIFJB2r/5gVs1
+!
+interface Loopback0
+ ip address 12.14.18.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+ !
+ interface Ethernet2/0
+ description OBS-PCore013
+ ip address 172.168.43.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/1
+ description OBS-PCore09
+ ip address 172.168.19.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/2
+ description OBS-PCore04
+ ip address 172.168.41.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ !
+interface Ethernet2/3
+ description OBS-PE010
+ ip address 172.168.40.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ router ospfv3 20
+ router-id 30.30.30.14
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospf 200
+ router-id 18.18.18.15
+ network 172.168.19.0 0.0.0.3 area 0
+ network 172.168.40.0 0.0.0.3 area 0
+ network 172.168.41.0 0.0.0.3 area 0
+ network 172.168.43.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+ !
+ ip forward-protocol nd
+!         
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+ip explicit-path name NPE_PATH_SECONDARY enable
+ next-address 172.168.37.2
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!         
+!
+end
+ 

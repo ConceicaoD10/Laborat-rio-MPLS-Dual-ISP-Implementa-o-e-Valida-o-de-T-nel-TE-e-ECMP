@@ -1,0 +1,146 @@
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$CEFI$768k/CpebOoof0QMaBxMH/
+!
+interface Loopback0
+ ip address 200.200.10.1 255.255.255.0
+ ipv6 enable
+ ospfv3 1 ipv4 area 0.0.0.0
+!
+interface Ethernet2/0
+ description PCore21
+ ip address 10.10.82.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/1
+ description PCore021
+ ip address 10.10.21.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/2
+ description PCore017
+ ip address 1.10.72.1 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/3
+ description VODA-ASBR024
+ ip address 10.10.24.1 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet3/0
+ description PCore22
+ ip address 10.10.23.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet3/0
+ description PCore22
+ ip address 10.10.23.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet3/0
+ description PCore22
+ ip address 10.10.23.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end
+
+

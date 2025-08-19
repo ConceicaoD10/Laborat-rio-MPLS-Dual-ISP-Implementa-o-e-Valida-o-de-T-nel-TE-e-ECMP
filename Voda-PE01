@@ -1,0 +1,237 @@
+PE01#show running-config 
+Building configuration...
+
+Current configuration : 3332 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname PE01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$f6ZV$ITVhClx3yQrjYwlCdl8az/
+!
+no aaa new-model
+!
+ip vrf VRF-HSBC
+ rd 1:300
+ route-target export 1:300
+ route-target import 1:300
+!
+ip vrf VRF-NPE
+ rd 1:200 
+ route-target export 1:200
+ route-target import 1:200
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!         
+!
+username operador privilege 15 secret 5 $1$u5VK$L3AXTBRTYugxoPn.jQXay1
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.11.14.1 255.255.255.0
+ ipv6 enable
+ ospfv3 1 ipv4 area 0.0.0.0
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet2/0
+ description PCore06
+ ip address 10.10.16.1 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/1
+ description VRF-NPE
+ ip vrf forwarding VRF-NPE
+ ip address 172.168.26.2 255.255.255.252
+ duplex full
+!
+interface Ethernet2/2
+ description VRF-HSBC
+ ip vrf forwarding VRF-HSBC
+ ip address 172.168.25.2 255.255.255.252
+ duplex full
+!
+interface Ethernet2/3
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/1
+ no ip address
+ shutdown 
+ duplex full
+!
+interface Ethernet3/2
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/3
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/4
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/5
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/6
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/7
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet4/0
+ no ip address
+ shutdown
+
+interface Ethernet4/1
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet4/2
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet4/3
+ no ip address
+ shutdown
+ duplex full
+!
+router ospfv3 1
+ router-id 1.1.1.1
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospf 100
+ router-id 10.10.10.1
+ network 10.10.16.0 0.0.0.3 area 0
+ maximum-paths 2
+ mpls traffic-eng area 0
+!
+router bgp 421
+ bgp log-neighbor-changes
+ neighbor 120.125.10.1 remote-as 421
+ neighbor 120.125.10.1 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 120.125.10.1 activate
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 120.125.10.1 activate
+  neighbor 120.125.10.1 send-community both
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family ipv4 vrf VRF-HSBC
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family ipv4 vrf VRF-NPE
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!         
+no ip http server
+no ip http secure-server
+ip route vrf VRF-NPE 0.0.0.0 0.0.0.0 10.10.80.2
+!
+ip explicit-path name NPE_PATH_PRIMARY enable
+ next-address 10.10.16.2
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!         
+end
+
+PE01#
+PE01#
+PE01#

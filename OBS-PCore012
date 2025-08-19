@@ -1,0 +1,143 @@
+Building configuration...
+
+Current configuration : 3358 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname CIB-PCore012
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$ETvH$ld92zZgiafp1DbzIxZZUE.
+!
+no aaa new-model
+!
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$QtGM$hbc4xzacEB6Obn8gyHfUj/
+!
+interface Loopback0
+ ip address 17.17.17.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+!
+!
+interface Ethernet2/0
+ description OBS-PCore07
+ ip address 172.168.27.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/1
+ description OBS-PCore04
+ ip address 182.178.44.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/2
+ description OBS-ASBR025
+ ip address 172.168.112.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+
+ interface Ethernet2/3
+ description OBS-PE05
+ ip address 172.168.25.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+
+ !
+interface Ethernet3/0
+ description OBS-PCore013
+ ip address 172.168.23.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ !
+interface Ethernet3/0
+ description OBS-PCore013
+ ip address 172.168.23.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+ip explicit-path name HSBC_PATH_SECONDARY enable
+ next-address 172.168.112.2
+!
+ip explicit-path name CIB_PATH_SECONDARY enable
+ next-address 172.168.112.2
+!
+ip explicit-path name NPE-HQ_PATH_PRIMARY enable
+ next-address 172.168.112.2
+!
+!
+!
+!         
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end
+

@@ -1,0 +1,118 @@
+Building configuration...
+
+Current configuration : 3043 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname VODA-ASBR024
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$yCXv$b70h21i121KjzWPYyEPzR0
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$Fe7Q$wNzd4RpTOmXCOEs3aW0WF.
+!
+interface Loopback0
+ ip address 23.24.23.1 255.255.255.0
+ ipv6 enable
+ ospfv3 1 ipv4 area 0.0.0.0
+ !
+!
+interface Ethernet2/0
+ description OBS-ASBR025
+ ip address 201.130.25.1 255.255.255.252
+!
+
+ interface Ethernet2/1
+ description VODA-PCore21
+ ip address 10.10.84.1 255.255.255.252
+ ip ospf 100 area 0
+!
+mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+interface Ethernet2/2
+ description VODA-PCore22
+ ip address 10.10.24.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ !
+ router ospfv3 1
+ router-id 4.7.9.10
+ !        
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospf 100
+ router-id 19.19.19.1
+ network 10.10.24.0 0.0.0.3 area 0
+ network 10.10.84.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+ !
+router bgp 421
+ bgp log-neighbor-changes
+ neighbor 120.125.10.1 remote-as 421
+ neighbor 120.125.10.1 update-source Loopback0
+ neighbor 201.130.25.2 remote-as 5200
+ !
+  !
+ address-family ipv4
+  neighbor 120.125.10.1 activate
+  neighbor 201.130.25.2 activate
+  neighbor 201.130.25.2 send-community both
+ exit-address-family
+ !
+
+  address-family vpnv4
+  neighbor 120.125.10.1 activate
+  neighbor 120.125.10.1 send-community both
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end

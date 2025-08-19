@@ -1,0 +1,148 @@
+Building configuration...
+
+Current configuration : 3247 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname PCore06
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$v3CG$WVQOeJYA3bYtamZm/y3E81
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$9zSh$Flf3iI5BUA2ferQldSJ2A/
+!
+interface Loopback0
+ ip address 10.10.10.2 255.255.255.0
+ ipv6 enable
+ ospfv3 1 ipv4 area 0.0.0.0
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet2/0
+ description PCore017
+ ip address 10.10.76.1 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+interface Ethernet2/1
+ description PCore021
+ ip address 10.10.26.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/2
+ description PCore016
+ ip address 10.10.61.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+interface Ethernet2/1
+ description PCore021
+ ip address 10.10.26.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/2
+ description PCore016
+ ip address 10.10.61.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+interface Ethernet2/1
+ description PCore021
+ ip address 10.10.26.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet2/2
+ description PCore016
+ ip address 10.10.61.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+
+

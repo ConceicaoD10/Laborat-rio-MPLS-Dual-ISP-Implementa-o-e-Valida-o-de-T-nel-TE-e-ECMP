@@ -1,0 +1,117 @@
+ip vrf VRF-HSBC
+ rd 1:300
+ route-target export 1:300
+ route-target import 1:300
+!
+ip vrf VRF-NPE
+ rd 1:200 
+ route-target export 1:200
+ route-target import 1:200
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+ username operador privilege 15 secret 5 $1$bsov$yaC9l/aLiPkEIGckByR3J.
+!
+ interface Loopback0
+ ip address 100.120.10.10 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+ !
+ !
+interface Ethernet2/0
+ description OBS-PCore014
+ ip address 172.168.40.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/1
+ description VRF-NPE
+ ip vrf forwarding VRF-NPE
+ ip address 172.168.28.1 255.255.255.252
+ duplex full
+ !
+ !
+interface Ethernet2/2
+ description VRF-HSBC
+ ip vrf forwarding VRF-HSBC
+ ip address 172.168.30.2 255.255.255.252
+ duplex full
+ !
+  router ospfv3 20
+ router-id 50.50.50.10
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospf 200
+ router-id 17.17.17.10
+ network 172.168.40.0 0.0.0.3 area 0
+ maximum-paths 2
+ mpls traffic-eng area 0
+ !
+ router bgp 5200
+ bgp log-neighbor-changes
+ neighbor 19.15.10.1 remote-as 5200
+ neighbor 19.15.10.1 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 19.15.10.1 activate
+  maximum-paths 2
+ exit-address-family
+ !
+ !
+ address-family vpnv4
+  neighbor 19.15.10.1 activate
+  neighbor 19.15.10.1 send-community both
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family ipv4 vrf VRF-HSBC
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family ipv4 vrf VRF-NPE
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+ip route vrf VRF-NPE 0.0.0.0 0.0.0.0 172.168.73.1
+!
+ip explicit-path name NPE_PATH_SECONDARY enable
+ next-address 172.168.40.1
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end
+

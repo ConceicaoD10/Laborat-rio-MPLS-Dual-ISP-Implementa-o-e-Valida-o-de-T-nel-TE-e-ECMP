@@ -1,0 +1,119 @@
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$OnNY$ReKD0iWGXYnJHy/Urnv2h.
+!
+ interface Loopback0
+ ip address 18.18.17.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+!
+ !
+interface Ethernet2/0
+ description OBS-RR08
+ ip address 10.100.10.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/1
+ description OBS-PCore04
+ ip address 168.174.10.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/2
+ description OBS-PCore09
+ ip address 172.168.94.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/3
+ description CIB-PCore012
+ ip address 172.168.42.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+  interface Ethernet3/0
+ description OBS-PCore014
+ ip address 172.168.41.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !router ospfv3 20
+ router-id 50.50.50.4
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+ !
+
+ router ospf 200
+ router-id 30.30.30.50
+ network 10.100.10.0 0.0.0.3 area 0
+ network 172.168.41.0 0.0.0.3 area 0
+ network 172.168.42.0 0.0.0.3 area 0
+ network 172.168.47.0 0.0.0.3 area 0
+ network 172.168.59.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+ !
+
+ ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+ip explicit-path name HSBC_PATH_SECONDARY enable
+ next-address 182.178.44.2
+!
+ip explicit-path name CIB_PATH_SECONDARY enable
+ next-address 182.178.44.2
+!
+!
+!
+!
+control-plane
+!
+!         
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end

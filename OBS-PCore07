@@ -1,0 +1,143 @@
+Building configuration...
+
+Current configuration : 3293 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname OBS-PCore07
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$fJMe$JSkQPpsmH/aqKw/PySFki.
+!
+no aaa new-model
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+username operador privilege 15 secret 5 $1$.K.f$X11IvCsSvJlXMbic9aMhZ0
+!
+interface Loopback0
+ ip address 13.13.13.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+!
+!
+interface Ethernet2/0
+ description Voda-GW03
+ ip address 172.168.73.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/1
+ description OBS-PCore013
+ ip address 172.168.37.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/2
+ description CIB-PCore012
+ ip address 172.168.27.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet2/3
+ description OBS-PCore04
+ ip address 172.168.47.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+!
+interface Ethernet3/0
+ description OBS-ASBR025
+ ip address 172.168.17.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+router ospfv3 20
+ router-id 10.10.10.7
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+!
+router ospfv3 1
+ !
+ address-family ipv4 unicast
+ exit-address-family
+!
+router ospf 200
+ router-id 24.24.24.30
+ network 172.168.17.0 0.0.0.3 area 0
+ network 172.168.27.0 0.0.0.3 area 0
+ network 172.168.37.0 0.0.0.3 area 0
+ network 172.168.47.0 0.0.0.3 area 0
+ network 172.168.73.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+!
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+ip explicit-path name NPE_PATH_SECONDARY enable
+ next-address 182.178.18.1
+!
+!
+!
+!         
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end
+
+

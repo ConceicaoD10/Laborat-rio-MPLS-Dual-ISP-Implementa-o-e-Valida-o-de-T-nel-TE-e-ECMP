@@ -1,0 +1,151 @@
+  enable secret 5 $1$2W0X$ewS1ATKGpf05xePD1ZIhK0
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$59Kz$H6Fk4HbrwvWrkb1oxI4HZ/
+interface Loopback0
+ ip address 10.10.13.1 255.255.255.0
+ ipv6 enable
+ ospfv3 1 ipv4 area 0.0.0.0
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet2/0
+ description Voda-RR019
+ ip address 10.10.97.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 1 area 0.0.0.0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+
+!
+interface Ethernet2/1
+ description Voda-PCore06
+ ip address 10.10.76.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!         
+interface Ethernet2/2
+ description Voda-PCore016
+ ip address 10.10.67.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ 
+interface Ethernet2/3
+ description Voda-PCore21
+ ip address 10.10.78.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+!
+interface Ethernet3/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet3/1
+ description Voda-PCore22
+ ip address 10.10.72.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf 1 area 0.0.0.0
+ duplex full
+ ipv6 enable
+ mpls ip
+ mpls traffic-eng tunnels
+ ospfv3 network point-to-point
+ ospfv3 1 ipv4 area 0.0.0.0
+router ospfv3 1
+ router-id 2.2.2.17
+ !
+ address-family ipv4 unicast
+  passive-interface Loopback0
+ exit-address-family
+!
+router ospf 1
+!
+router ospf 100
+ router-id 12.12.12.1
+ network 10.10.76.0 0.0.0.3 area 0
+ network 10.10.78.0 0.0.0.3 area 0
+ mpls traffic-eng area 0
+
+ ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!         
+ip explicit-path name NPE_PATH_PRIMARY enable
+ next-address 10.10.18.1
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+
+ 
+

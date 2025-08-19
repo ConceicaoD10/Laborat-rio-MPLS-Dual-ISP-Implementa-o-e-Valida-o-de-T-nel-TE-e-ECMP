@@ -1,0 +1,104 @@
+no ip domain lookup
+ip domain name lab
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+mpls traffic-eng tunnels
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username operador privilege 15 secret 5 $1$aNYd$xwwxPRK.71BMOvVv3R4iA/
+!
+interface Loopback0
+ ip address 14.14.10.1 255.255.255.0
+ ipv6 enable
+ ospfv3 20 ipv4 area 0.0.0.0
+ !
+ interface Ethernet2/0
+ description OBS-PCore04
+ ip address 172.168.94.2 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/1
+ description OBS-PCore013
+ ip address 172.168.39.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/2
+ description OBS-PE015
+ ip address 172.168.59.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/3
+ description OBS-PCore014
+ ip address 172.168.19.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ interface Ethernet2/3
+ description OBS-PCore014
+ ip address 172.168.19.1 255.255.255.252
+ duplex full
+ ipv6 enable
+ mpls ip
+ ospfv3 network point-to-point
+ ospfv3 20 ipv4 area 0.0.0.0
+ ip rsvp bandwidth 100000 100000
+ !
+ ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+ip explicit-path name HSBC_SECONDARY enable
+ next-address 172.168.94.1
+!
+ip explicit-path name CIB_PATH_SECONDARY enable
+ next-address 172.168.94.1
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ privilege level 15
+ login local
+ transport input telnet ssh
+!
+!
+end 
+  
+  
+
